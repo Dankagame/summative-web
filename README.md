@@ -8,6 +8,8 @@ A simple weather application that displays current weather conditions and a 5-da
 - 5-day forecast with average temperatures
 - Responsive design for mobile and desktop
 
+### Demo - [Video Demo](https://youtu.be/1H1Zz_KvYlY)
+
 ## API Used
 This app uses the [OpenWeatherMap API](https://openweathermap.org/api). You'll need to sign up for a free API key.
 
