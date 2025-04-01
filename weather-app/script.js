@@ -1,12 +1,11 @@
-// Weather App - Fully Working Version with CORS Fix
-const API_KEY = 'c9e5d418b4d6dcfda4ba57ce9e5265e0'; // Your actual API key
+const API_KEY = 'c9e5d418b4d6dcfda4ba57ce9e5265e0';
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
-const CORS_PROXY = 'https://thingproxy.freeboard.io/fetch/'; // Updated to a more reliable proxy
+const CORS_PROXY = 'https://thingproxy.freeboard.io/fetch/';
 
 // Initialize app when DOM loads
 document.addEventListener('DOMContentLoaded', () => {
     // Set event listeners
-    document.getElementById('search-btn').addEventListener('click', searchWeather);
+    document.getElementById('search-btn').addEventListener('click', () => searchWeather());
     document.getElementById('city-input').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') searchWeather();
     });
@@ -33,16 +32,16 @@ async function searchWeather(city = null) {
 }
 
 async function fetchWeather(city) {
-    // Construct the API URL with encoded city parameter
+    // Use CORS proxy instead of local proxy
     const apiUrl = `${BASE_URL}/weather?q=${encodeURIComponent(city)}&units=metric&appid=${API_KEY}`;
-    const response = await fetch(`${CORS_PROXY}${apiUrl}`);
+    const url = `${CORS_PROXY}${apiUrl}`;
+    const response = await fetch(url);
 
     if (!response.ok) {
-        const text = await response.text(); // Get raw response for better error insight
+        const text = await response.text();
         throw new Error(`City not found or API error (${response.status}): ${text.slice(0, 100)}`);
     }
 
-    // Check if response is JSON to avoid parsing errors
     const contentType = response.headers.get('Content-Type');
     if (!contentType || !contentType.includes('application/json')) {
         const text = await response.text();
@@ -78,3 +77,4 @@ function showError(message) {
         'Failed to fetch weather data. Please check the city name and try again.';
     document.getElementById('error-message').classList.remove('hidden');
     console.error('Detailed error:', message); // Keep detailed error in console
+}
